@@ -31,7 +31,7 @@ body {
 textarea {
     width: 100%;
     margin-bottom: 10px;
-	height:18vh;
+	height: 18vh;
     resize: vertical;
     box-sizing: border-box;
 }
@@ -75,6 +75,6 @@ label {
 @media only screen and (max-width: 480px) {
     /* Apply styles for screens up to 480px wide (typical mobile devices) */
     label {
-        font-size: 16pt;
+        font-size: 40pt; /* Adjust the font size for smaller screens */
     }
 }
