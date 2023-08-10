@@ -204,7 +204,7 @@ TAG POS=1 TYPE=INPUT:TEXT FORM=NAME:NoFormName ATTR=ID:DomainFrom CONTENT=${doma
 TAG POS=1 TYPE=SELECT FORM=NAME:NoFormName ATTR=ID:SelfDescription CONTENT=%${randomProvider}
 TAG POS=1 TYPE=TEXTAREA FORM=NAME:NoFormName ATTR=ID:IpAddresses CONTENT=${ips[i]}
 TAG POS=1 TYPE=SELECT FORM=NAME:NoFormName ATTR=ID:ServerType CONTENT=%${randomDedicated}
-TAG POS=1 TYPE=TEXTAREA FORM=NAME:NoFormName ATTR=ID:ErrorMessages CONTENT=${errors[i]}
+TAG POS=1 TYPE=TEXTAREA FORM=NAME:NoFormName ATTR=ID:ErrorMessages CONTENT=${errors[i]}"
 TAG POS=1 TYPE=TEXTAREA FORM=NAME:NoFormName ATTR=ID:WebsiteUrl CONTENT=http://${domainsArray[i]}/
 wait seconds=5
 TAG POS=1 TYPE=BUTTON FORM=NAME:NoFormName ATTR=TXT:Submit`;
