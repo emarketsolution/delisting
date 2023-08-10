@@ -57,7 +57,7 @@ function txt1_txt6(text) {
     const line = lines[i];
     if (line.includes("550 5.7.1")) {
       const ipMatch = /messages from \[([\d.]+)\]/.exec(line); // Extract IP from messages from [x.x.x.x]
-      const errorMessageMatch = /Error: "550 5.7.1 (.+)"/.exec(line);
+      const errorMessageMatch = /Error: "550 5.7.1 (.+)/.exec(line);
 
       if (ipMatch && ipMatch[1] && errorMessageMatch) {
         const ipAddress = ipMatch[1];
