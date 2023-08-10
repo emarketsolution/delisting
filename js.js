@@ -1,3 +1,6 @@
+window.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+});
 // -------------------------------------------------------------------- filtre bounce -------------------------------------------------------------------- 
 function extractLines(inputText) {
   const searchText = "550 5.7.1 Unfortunately";
