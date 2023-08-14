@@ -465,7 +465,40 @@ document.getElementById("execute-btn").addEventListener("click", function() {
 	
 });
 
+document.getElementById("imacros-btn").addEventListener("click", function() {
+  const email = document.getElementById("textarea5").value;
+  emailList = email.split("\n").map(email => email.trim());  
+  const dom = document.getElementById("textarea2").value;
+  domains = dom.split("\n").map(email => email.trim());  
+  // document.getElementById("textarea5").value = errorMessages.join("\n");
+  const errorT = spaceError(errorMessages);
+//-------------------
+ 
 
+
+ 
+	if (dom_input.value.trim() === "" ) {
+    dom_input.classList.add("empty-textarea");
+	}
+
+
+
+//--------------------
+
+  
+if (domains.length > ips.length) {
+  alert('Error: There are more domains than IPS.');
+} else if (domains.length < ips.length) {
+  alert('Error: There are more IPS than domains.');
+} else if(email_input.value.trim() === "" ) {
+    email_input.classList.add("empty-textarea");
+	  }else{ 
+  // No error conditions, proceed with your code logic here
+  document.getElementById("textarea3").value = errorT.join("\n");
+  document.getElementById("textarea4").value = generateMacroScript(ips, errorT, domains, emailList);
+}  
+  
+});
 
 // jQuery code
 $(document).ready(function() {
