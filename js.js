@@ -1,3 +1,7 @@
+document.addEventListener('contextmenu', function(event) {
+  event.preventDefault();
+});
+
 // -------------------------------------------------------------------- filtre bounce -------------------------------------------------------------------- 
 function extractLines(inputText) {
   const searchText = "550 5.7.1 Unfortunately";
@@ -461,45 +465,7 @@ document.getElementById("execute-btn").addEventListener("click", function() {
 	
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-  const imacrosButton = document.getElementById("imacros-btn");
-  const downloadLink = document.getElementById("download-link"); // Define downloadLink here
-  
-  imacrosButton.addEventListener("click", function() {
-    const email = document.getElementById("textarea5").value;
-    emailList = email.split("\n").map(email => email.trim());  
-    const dom = document.getElementById("textarea2").value;
-    domains = dom.split("\n").map(email => email.trim());  
-    const errorT = spaceError(errorMessages);
 
-    // Check if the input values are empty
-    if (dom_input.value.trim() === "") {
-      dom_input.classList.add("empty-textarea");
-    }
-    if (email === "") {
-      email_input.classList.add("empty-textarea");
-    }
-    
-    if (domains.length > ips.length) {
-      alert('Error: There are more domains than IPS.');
-    } else if (domains.length < ips.length) {
-      alert('Error: There are more IPS than domains.');
-    } else if (email_input.value.trim() === "") {
-      email_input.classList.add("empty-textarea");
-    } else {
-      // No error conditions, proceed with your code logic here
-      document.getElementById("textarea3").value = errorT.join("\n");
-      const generatedScript = generateMacroScript(ips, errorT, domains, emailList);
-
-      // Update the download link
-      downloadLink.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(generatedScript);
-      downloadLink.style.display = 'block'; // Make the link visible
-
-      // Update the textarea with the generated script
-      document.getElementById("textarea4").value = generatedScript;
-    }
-  });
-});
 
 // jQuery code
 $(document).ready(function() {
