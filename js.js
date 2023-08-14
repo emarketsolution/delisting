@@ -1,6 +1,6 @@
-document.addEventListener('contextmenu', function(event) {
-  event.preventDefault();
-});
+// document.addEventListener('contextmenu', function(event) {
+  // event.preventDefault();
+// });
 
 // -------------------------------------------------------------------- filtre bounce -------------------------------------------------------------------- 
 function extractLines(inputText) {
@@ -514,3 +514,22 @@ $(document).ready(function() {
     bounce_input.classList.remove("empty-textarea");
   });
 });
+
+ document.getElementById("splitButton").addEventListener("click", function() {
+            const inputText = document.getElementById("textarea4").value;
+            const sections = inputText.split("' 1 ");
+
+            for (let i = 1; i < sections.length; i++) {
+                const sectionText = "' 1 " + sections[i].trim();
+                if (sectionText !== "' 1 ") {
+                    const blob = new Blob([sectionText], { type: "text/plain" });
+                    const a = document.createElement("a");
+                    a.href = URL.createObjectURL(blob);
+                    a.download = `imacros${i}.iim`;
+                    a.style.display = "none";
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                }
+            }
+        });
