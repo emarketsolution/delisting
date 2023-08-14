@@ -1,6 +1,7 @@
-window.addEventListener('contextmenu', function (e) {
-    e.preventDefault();
+document.addEventListener('contextmenu', function(event) {
+  event.preventDefault();
 });
+
 // -------------------------------------------------------------------- filtre bounce -------------------------------------------------------------------- 
 function extractLines(inputText) {
   const searchText = "550 5.7.1 Unfortunately";
@@ -22,77 +23,55 @@ function extractLines(inputText) {
   return resultText;
 }
 
+// -----------------------------------
 
 
 // --------------------------------------------------------------------	returrn ip and errors 	------------------------------------------------------------------------------------
-// function txt1_txt6(text) {
-  // const lines = text.split('\n');
-  // const ips = [];
-  // const errorMessages = [];
-
-  // for (let i = 0; i < lines.length; i++) {
-    // const line = lines[i];
-    // if (line.includes("550 5.7.1")) {
-      // const ipMatch = /hotmail-(\d+\.\d+\.\d+\.\d+)/.exec(line);
-      // const errorMessageMatch = /Error: "550 5.7.1 (.+)"/.exec(line);
-
-      // if (ipMatch && ipMatch[1] && errorMessageMatch) {
-        // ips.push(ipMatch[1]);
-        // const errorMessage = errorMessageMatch[1] + line.slice(errorMessageMatch[0].length);
-        // errorMessages.push(`Error: "550 5.7.1 ${errorMessage}"`);
-      // }
-    // }
-  // }
-
-  // return { ips, errorMessages };
-// }
-
-
 function txt1_txt6(text) {
-  const lines = text.split('\n');
-  const ips = [];
+  const regex = /(Error: "[^"]*"[^\n]*)/g;
+  const matches = text.match(regex);
+
   const errorMessages = [];
 
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    if (line.includes("550 5.7.1")) {
-      const ipMatch = /messages from \[([\d.]+)\]/.exec(line); // Extract IP from messages from [x.x.x.x]
-      const errorMessageMatch = /Error: "550 5.7.1 (.+)/.exec(line);
-
-      if (ipMatch && ipMatch[1] && errorMessageMatch) {
-        const ipAddress = ipMatch[1];
-        ips.push(ipAddress);
-        const errorMessage = errorMessageMatch[1] + line.slice(errorMessageMatch[0].length);
-        errorMessages.push({ ip: ipAddress, message: `Error: "550 5.7.1 ${errorMessage}` });
-      }
+  if (matches) {
+    for (const match of matches) {
+      errorMessages.push(match);
     }
   }
 
-  ips.sort((a, b) => {
-    // Custom sorting function for IPs (small to big)
-    const ipPartsA = a.split('.').map(part => parseInt(part));
-    const ipPartsB = b.split('.').map(part => parseInt(part));
-    for (let i = 0; i < 4; i++) {
-      if (ipPartsA[i] !== ipPartsB[i]) {
-        return ipPartsA[i] - ipPartsB[i];
-      }
-    }
-    return 0;
+  // Sort errorMessages based on the IP addresses
+  errorMessages.sort((msg1, msg2) => {
+    const ipRegex = /messages from \[([\d.]+)\]/;
+    const ip1 = msg1.match(ipRegex)[1];
+    const ip2 = msg2.match(ipRegex)[1];
+    return ip1.localeCompare(ip2, undefined, { numeric: true });
   });
 
-  errorMessages.sort((msgA, msgB) => {
-    const ipA = msgA.ip.split('.').map(part => parseInt(part));
-    const ipB = msgB.ip.split('.').map(part => parseInt(part));
-    for (let i = 0; i < 4; i++) {
-      if (ipA[i] !== ipB[i]) {
-        return ipA[i] - ipB[i];
-      }
-    }
-    return 0;
-  });
-
-  return { ips, errorMessages: errorMessages.map(msg => msg.message) };
+  return errorMessages;
 }
+// -------------------
+function txt1_txtips(errorMessages) {
+  const regex = /messages from \[([\d.]+)\]/;
+  const ips = [];
+
+  for (const errorMessage of errorMessages) {
+    const match = errorMessage.match(regex);
+    if (match && match[1]) {
+      ips.push(match[1]);
+    }
+  }
+
+  return ips;
+}
+
+
+
+
+
+
+
+
+
 
 
 // --------------------------------------------------------------------	REPLACE SPACE <SP>	------------------------------------------------------------------------------------
@@ -111,7 +90,218 @@ function txt1_txt6(text) {
 // --------------------------------------------------------------------	return imacros 	------------------------------------------------------------------------------------
 
 function generateMacroScript(ips, errors, domains, email) {
-  const names = ['Alice<SP>Smith', 'Bob<SP>Johnson', 'Charlie<SP>Williams', 'David<SP>Brown', 'Eva<SP>Miller', 'Grace<SP>Wilson', 'Henry<SP>JAVADI', 'Ivy<SP>Wilson', 'Jack<SP>Clark', 'Karen<SP>Taylor'];
+  const names = [
+  'Alice<SP>Smith',
+  'Bob<SP>Johnson',
+  'Charlie<SP>Williams',
+  'David<SP>Brown',
+  'Eva<SP>Miller',
+  'Grace<SP>Wilson',
+  'Henry<SP>JAVADI',
+  'Ivy<SP>Wilson',
+  'Jack<SP>Clark',
+  'Alice<SP>Smith',
+  'Bob<SP>Johnson',
+  'Charlie<SP>Williams',
+  'David<SP>Brown',
+  'Eva<SP>Miller',
+  'Grace<SP>Wilson',
+  'Henry<SP>JAVADI',
+  'Ivy<SP>Wilson',
+  'Jack<SP>Clark',
+  'Karen<SP>Taylor',
+  'Alice<SP>Smith',
+  'Bob<SP>Johnson',
+  'Charlie<SP>Williams',
+  'David<SP>Brown',
+  'Eva<SP>Miller',
+  'Grace<SP>Wilson',
+  'Henry<SP>JAVADI',
+  'Ivy<SP>Wilson',
+  'Jack<SP>Clark',
+  'Karen<SP>Taylor',
+  'Liam<SP>Garcia',
+  'Olivia<SP>Martinez',
+  'Noah<SP>Robinson',
+  'Emma<SP>Miller',
+  'Sophia<SP>Hernandez',
+  'Aiden<SP>Davis',
+  'Isabella<SP>Johnson',
+  'Lucas<SP>Williams',
+  'Mia<SP>Brown',
+  'Luna<SP>Davis',
+  'Elijah<SP>Taylor',
+  'Ava<SP>Clark',
+  'James<SP>Lee',
+  'Charlotte<SP>Wilson',
+  'Ethan<SP>Anderson',
+  'Amelia<SP>Smith',
+  'Michael<SP>Johnson',
+  'Emily<SP>Garcia',
+  'Benjamin<SP>Davis',
+  'Scarlett<SP>Williams',
+  'William<SP>Smith',
+  'Chloe<SP>Robinson',
+  'Alexander<SP>Hernandez',
+  'Grace<SP>Taylor',
+  'Oliver<SP>Clark',
+  'Abigail<SP>Davis',
+  'Daniel<SP>Brown',
+  'Sophie<SP>Miller',
+  'Logan<SP>Wilson',
+  'Harper<SP>Smith',
+  'Matthew<SP>Johnson',
+  'Ella<SP>Garcia',
+  'Jackson<SP>Davis',
+  'Aria<SP>Anderson',
+  'Sebastian<SP>Robinson',
+  'Avery<SP>Hernandez',
+  'Lucas<SP>Taylor',
+  'Aria<SP>Taylor',
+  'Jayden<SP>Smith',
+  'Ellie<SP>Davis',
+  'Carter<SP>Johnson',
+  'Lily<SP>Garcia',
+  'Wyatt<SP>Williams',
+  'Zoe<SP>Clark',
+  'Grayson<SP>Brown',
+  'Layla<SP>Smith',
+  'Henry<SP>Johnson',
+  'Scarlett<SP>Garcia',
+  'Joseph<SP>Davis',
+  'Mila<SP>Anderson',
+  'Levi<SP>Robinson',
+  'Aubrey<SP>Hernandez',
+  'Oliver<SP>Taylor',
+  'Elizabeth<SP>Clark',
+  'Dylan<SP>Smith',
+  'Sofia<SP>Davis',
+  'Mateo<SP>Johnson',
+  'Grace<SP>Garcia',
+  'Theodore<SP>Williams',
+  'Camila<SP>Hernandez',
+  'Leo<SP>Taylor',
+  'Hazel<SP>Smith',
+  'Ethan<SP>Johnson',
+  'Luna<SP>Garcia',
+  'Daniel<SP>Robinson',
+  'Avery<SP>Clark',
+  'Jameson<SP>Brown',
+  'Aurora<SP>Davis',
+  'Jackson<SP>Smith',
+  'Nova<SP>Johnson',
+  'Samuel<SP>Garcia',
+  'Stella<SP>Williams',
+  'Benjamin<SP>Taylor',
+  'Lucy<SP>Hernandez',
+  'Joshua<SP>Clark',
+  'Paisley<SP>Davis',
+  'Christopher<SP>Smith',
+  'Hannah<SP>Johnson',
+  'Andrew<SP>Garcia',
+  'Aaliyah<SP>Hernandez',
+  'Olivia<SP>Taylor',
+  'Liam<SP>Martinez',
+  'Emma<SP>Rodriguez',
+  'Noah<SP>Ramirez',
+  'Olivia<SP>Hernandez',
+  'Sophia<SP>Gonzalez',
+  'Isabella<SP>Perez',
+  'Ava<SP>Torres',
+  'Mia<SP>Flores',
+  'Lucas<SP>Rivera',
+  'Harper<SP>Cruz',
+  'Alexander<SP>Diaz',
+  'Charlotte<SP>Sanchez',
+  'Ethan<SP>Valdez',
+  'Amelia<SP>Smith',
+  'Benjamin<SP>Adams',
+  'Ella<SP>Scott',
+  'Logan<SP>Brown',
+  'Luna<SP>Mitchell',
+  'Elijah<SP>Hall',
+  'Avery<SP>Wright',
+  'Jameson<SP>Foster',
+  'Aria<SP>Gray',
+  'Carter<SP>Allen',
+  'Scarlett<SP>Long',
+  'Mateo<SP>Young',
+  'Lily<SP>Green',
+  'Jackson<SP>Lewis',
+  'Zoe<SP>Turner',
+  'Grayson<SP>Martinez',
+  'Hazel<SP>Harris',
+  'Aria<SP>Smith',
+  'Sofia<SP>Williams',
+  'Leo<SP>Johnson',
+  'Lucy<SP>Davis',
+  'Theodore<SP>Martinez',
+  'Layla<SP>Clark',
+  'Muhammad<SP>Martin',
+  'Chloe<SP>Adams',
+  'Samuel<SP>Garcia',
+  'Stella<SP>Hernandez',
+  'Daniel<SP>Smith',
+  'Paisley<SP>Johnson',
+  'Joseph<SP>Lopez',
+  'Grace<SP>Gonzalez',
+  'John<SP>Rodriguez',
+  'Aaliyah<SP>Hernandez',
+  'Henry<SP>Lee',
+  'Camila<SP>Perez',
+  'Liam<SP>Torres',
+  'Emily<SP>Wright',
+  'Oliver<SP>Taylor',
+  'Nora<SP>Scott',
+  'Ethan<SP>Diaz',
+  'Aurora<SP>Ramirez',
+  'Alexander<SP>Hall',
+  'Mila<SP>Foster',
+  'David<SP>Gray',
+  'Victoria<SP>Turner',
+  'Benjamin<SP>Lewis',
+  'Luna<SP>Adams',
+  'Ava<SP>Smith',
+  'Lucas<SP>Williams',
+  'Lily<SP>Johnson',
+  'Leo<SP>Davis',
+  'Sophia<SP>Martinez',
+  'Ella<SP>Rodriguez',
+  'Jackson<SP>Harris',
+  'Aria<SP>Gonzalez',
+  'Muhammad<SP>Lopez',
+  'Grace<SP>Martin',
+  'Aiden<SP>Clark',
+  'Isabella<SP>Turner',
+  'Ethan<SP>Miller',
+  'Olivia<SP>Foster',
+  'Theodore<SP>Gray',
+  'Nora<SP>Long',
+  'Aurora<SP>Young',
+  'Henry<SP>Green',
+  'Liam<SP>Lewis',
+  'Camila<SP>Hall',
+  'John<SP>Hernandez',
+  'Lucy<SP>Smith',
+  'Daniel<SP>Taylor',
+  'Victoria<SP>Scott',
+  'Lily<SP>Diaz',
+  'Alexander<SP>Ramirez',
+  'Ava<SP>Adams',
+  'Lucas<SP>Turner',
+  'Nora<SP>Williams',
+  'Ella<SP>Johnson',
+  'Jackson<SP>Davis',
+  'Grace<SP>Harris',
+  'David<SP>Gonzalez',
+  'Emily<SP>Smith',
+  'Benjamin<SP>Martin',
+  'Sophia<SP>Clark',
+  'Aiden<SP>Turner',
+  'Olivia<SP>Foster',
+  'Avery<SP>Smith',
+  'Karen<SP>Taylor'
+  ];
   const Dedicated = ['Unknown', 'Dedicated', 'Shared'];
   const timeZones = [
   "Israel<SP>Standard<SP>Time",
@@ -128,6 +318,28 @@ function generateMacroScript(ips, errors, domains, email) {
   "Egypt<SP>Standard<SP>Time",
   "South<SP>Africa<SP>Standard<SP>Time",
   "North<SP>Asia<SP>Standard<SP>Time",
+  "North<SP>Asia<SP>Standard<SP>Time",
+  "SE<SP>Asia<SP>Standard<SP>Time",
+  "Myanmar<SP>Standard<SP>Time",
+  "Central<SP>Asia<SP>Standard<SP>Time",
+  "Sri<SP>Lanka<SP>Standard<SP>Time",
+  "AUS<SP>Central<SP>Standard<SP>Time",
+  "Cen.<SP>Australia<SP>Standard<SP>Time",
+  "Taipei<SP>Standard<SP>Time",
+  "Korea<SP>Standard<SP>Time",
+  "Tokyo<SP>Standard<SP>Time",
+  "W.<SP>Australia<SP>Standard<SP>Time",
+  "Singapore<SP>Standard<SP>Time",
+  "Ulaanbaatar<SP>Standard<SP>Time",
+  "China<SP>Standard<SP>Time",
+  "Korea<SP>Standard<SP>Time",
+  "Tokyo<SP>Standard<SP>Time",
+  "Ulaanbaatar<SP>Standard<SP>Time",
+  "China<SP>Standard<SP>Time",
+  "North<SP>Asia<SP>Standard<SP>Time",
+  "SE<SP>Asia<SP>Standard<SP>Time",
+  "Central<SP>Asia<SP>Standard<SP>Time",
+  "N.<SP>Central<SP>Asia<SP>Standard<SP>Time",
   "SE<SP>Asia<SP>Standard<SP>Time",
   "Myanmar<SP>Standard<SP>Time",
   "Central<SP>Asia<SP>Standard<SP>Time",
@@ -204,7 +416,7 @@ TAG POS=1 TYPE=INPUT:TEXT FORM=NAME:NoFormName ATTR=ID:DomainFrom CONTENT=${doma
 TAG POS=1 TYPE=SELECT FORM=NAME:NoFormName ATTR=ID:SelfDescription CONTENT=%${randomProvider}
 TAG POS=1 TYPE=TEXTAREA FORM=NAME:NoFormName ATTR=ID:IpAddresses CONTENT=${ips[i]}
 TAG POS=1 TYPE=SELECT FORM=NAME:NoFormName ATTR=ID:ServerType CONTENT=%${randomDedicated}
-TAG POS=1 TYPE=TEXTAREA FORM=NAME:NoFormName ATTR=ID:ErrorMessages CONTENT=${errors[i]}"
+TAG POS=1 TYPE=TEXTAREA FORM=NAME:NoFormName ATTR=ID:ErrorMessages CONTENT=${errors[i]}
 TAG POS=1 TYPE=TEXTAREA FORM=NAME:NoFormName ATTR=ID:WebsiteUrl CONTENT=http://${domainsArray[i]}/
 wait seconds=5
 TAG POS=1 TYPE=BUTTON FORM=NAME:NoFormName ATTR=TXT:Submit`;
@@ -228,72 +440,82 @@ let bounce_input = document.getElementById("textarea1");
 
 document.getElementById("execute-btn").addEventListener("click", function() {
 	
-  const inputText = document.getElementById("textarea1").value;
-  if(inputText === ""){
-	   bounce_input	.classList.add("empty-textarea");
-  }
-  else{
-		  const extractedText = extractLines(inputText);
-		  const result = txt1_txt6(extractedText);
-		  ips = result.ips;  
-		 if (ips.length === 0) {
-		  alert('Error: The PMTA IPS is empty.');
-		} else if (ips.length > 1170) {
-		  alert('Error: The number of IPS is greater than 100.');
+ const inputText = document.getElementById("textarea1").value;
+   if(inputText === ""){
+	    bounce_input	.classList.add("empty-textarea");
+   }
+   else{
+		   const extractedText = extractLines(inputText);
+		   const errorrr = txt1_txt6(extractedText);
+		   ips =txt1_txtips(errorrr);
+		  if (ips.length === 0) {
+		   alert('Error: The PMTA IPS is empty.');
+		} else if (ips.length > 117) {
+		   alert('Error: The number of IPS is greater than 117.');
 		} else {
-		  errorMessages = result.errorMessages;  
-		  document.getElementById("textarea3").value = ips.join("\n");
-		}
+		   errorMessages = errorrr;  
+		  
+	 }
 	  
-  }
+ }
   
 
+	// document.getElementById("textarea3").value = errorMessages.join("\n");
+	document.getElementById("textarea3").value = ips.join("\n");
+	
 });
 
-document.getElementById("imacros-btn").addEventListener("click", function() {
-  const email = document.getElementById("textarea5").value;
-  emailList = email.split("\n").map(email => email.trim());  
-  const dom = document.getElementById("textarea2").value;
-  domains = dom.split("\n").map(email => email.trim());  
-  // document.getElementById("textarea5").value = errorMessages.join("\n");
-  const errorT = spaceError(errorMessages);
-//-------------------
- 
-
-
- 
-	if (dom_input.value.trim() === "" ) {
-    dom_input.classList.add("empty-textarea");
-	}
-
-
-
-//--------------------
-
+document.addEventListener("DOMContentLoaded", function() {
+  const imacrosButton = document.getElementById("imacros-btn");
+  const downloadLink = document.getElementById("download-link"); // Define downloadLink here
   
-if (domains.length > ips.length) {
-  alert('Error: There are more domains than IPS.');
-} else if (domains.length < ips.length) {
-  alert('Error: There are more IPS than domains.');
-} else if(email_input.value.trim() === "" ) {
-    email_input.classList.add("empty-textarea");
-	  }else{ 
-  // No error conditions, proceed with your code logic here
-  document.getElementById("textarea3").value = errorT.join("\n");
-  document.getElementById("textarea4").value = generateMacroScript(ips, errorT, domains, emailList);
-}  
-  
+  imacrosButton.addEventListener("click", function() {
+    const email = document.getElementById("textarea5").value;
+    emailList = email.split("\n").map(email => email.trim());  
+    const dom = document.getElementById("textarea2").value;
+    domains = dom.split("\n").map(email => email.trim());  
+    const errorT = spaceError(errorMessages);
+
+    // Check if the input values are empty
+    if (dom_input.value.trim() === "") {
+      dom_input.classList.add("empty-textarea");
+    }
+    if (email === "") {
+      email_input.classList.add("empty-textarea");
+    }
+    
+    if (domains.length > ips.length) {
+      alert('Error: There are more domains than IPS.');
+    } else if (domains.length < ips.length) {
+      alert('Error: There are more IPS than domains.');
+    } else if (email_input.value.trim() === "") {
+      email_input.classList.add("empty-textarea");
+    } else {
+      // No error conditions, proceed with your code logic here
+      document.getElementById("textarea3").value = errorT.join("\n");
+      const generatedScript = generateMacroScript(ips, errorT, domains, emailList);
+
+      // Update the download link
+      downloadLink.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(generatedScript);
+      downloadLink.style.display = 'block'; // Make the link visible
+
+      // Update the textarea with the generated script
+      document.getElementById("textarea4").value = generatedScript;
+    }
+  });
 });
 
+// jQuery code
 $(document).ready(function() {
-    $("#textarea5").click(function() {
-	email_input.classList.remove("empty-textarea");
-   });
+  $("#textarea5").click(function() {
+    email_input.classList.remove("empty-textarea");
+  });
 
-	 $("#textarea2").click(function() {
-  dom_input.classList.remove("empty-textarea");
- });
+  $("#textarea2").click(function() {
+    dom_input.classList.remove("empty-textarea");
+  });
+  
   $("#textarea1").click(function() {
-	bounce_input.classList.remove("empty-textarea");
+    bounce_input.classList.remove("empty-textarea");
   });
 });
