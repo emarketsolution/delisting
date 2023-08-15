@@ -1,6 +1,6 @@
 document.addEventListener('contextmenu', function(event) {
-event.preventDefault();
- });
+  event.preventDefault();
+});
 
 // -------------------------------------------------------------------- filtre bounce -------------------------------------------------------------------- 
 function extractLines(inputText) {
@@ -446,6 +446,7 @@ document.getElementById("execute-btn").addEventListener("click", function() {
    }
    else{
 		   const extractedText = extractLines(inputText);
+			document.getElementById("textarea6").value = extractedText;
 		   const errorrr = txt1_txt6(extractedText);
 		   ips =txt1_txtips(errorrr);
 		  if (ips.length === 0) {
@@ -456,12 +457,14 @@ document.getElementById("execute-btn").addEventListener("click", function() {
 		   errorMessages = errorrr;  
 		  
 	 }
+		   document.getElementById("textarea3").value = ips.join("\n");
 	  
  }
   
 
 	// document.getElementById("textarea3").value = errorMessages.join("\n");
-	document.getElementById("textarea3").value = ips.join("\n");
+	// document.getElementById("textarea3").value = extractedText;
+	 
 	
 });
 
