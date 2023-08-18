@@ -408,17 +408,27 @@ SET !TIMEOUT_DOWNLOAD 15
 VERSION BUILD=9030808 RECORDER=FX
 URL GOTO=https://olcsupport.office.com/
 TAG POS=1 TYPE=INPUT:TEXT FORM=NAME:NoFormName ATTR=ID:IssueTitle CONTENT=bounce
+WAIT SECONDS=${Math.floor(Math.random() * 10) + 1}
 TAG POS=1 TYPE=INPUT:TEXT FORM=NAME:NoFormName ATTR=ID:ContactName CONTENT=${randomName}
+WAIT SECONDS=${Math.floor(Math.random() * 10) + 1}
 TAG POS=1 TYPE=SELECT FORM=NAME:NoFormName ATTR=ID:DomainTo CONTENT=%hotmail.com
+WAIT SECONDS=${Math.floor(Math.random() * 10) + 1}
 TAG POS=1 TYPE=INPUT:TEXT FORM=NAME:NoFormName ATTR=ID:ContactEmail CONTENT=${email1}
+WAIT SECONDS=${Math.floor(Math.random() * 10) + 1}
 TAG POS=1 TYPE=SELECT FORM=NAME:NoFormName ATTR=ID:ddlTimezones CONTENT=%${randomZone}
+WAIT SECONDS=${Math.floor(Math.random() * 10) + 1}
 TAG POS=1 TYPE=INPUT:TEXT FORM=NAME:NoFormName ATTR=ID:DomainFrom CONTENT=${domainsArray[i]}
-TAG POS=1 TYPE=SELECT FORM=NAME:NoFormName ATTR=ID:SelfDescription CONTENT=%${randomProvider}
+WAIT SECONDS=${Math.floor(Math.random() * 10) + 1}
+TAG POS=1 TYPE=SELECT FORM=NAME:NoFormName ATTR=ID:SelfDescription CONTENT=%E-mail<SP>Service<SP>Provider<SP>(ESP)
+WAIT SECONDS=${Math.floor(Math.random() * 10) + 1}
 TAG POS=1 TYPE=TEXTAREA FORM=NAME:NoFormName ATTR=ID:IpAddresses CONTENT=${ips[i]}
-TAG POS=1 TYPE=SELECT FORM=NAME:NoFormName ATTR=ID:ServerType CONTENT=%${randomDedicated}
+WAIT SECONDS=${Math.floor(Math.random() * 10) + 1}
+TAG POS=1 TYPE=SELECT FORM=NAME:NoFormName ATTR=ID:ServerType CONTENT=%Dedicated
+WAIT SECONDS=${Math.floor(Math.random() * 10) + 1}
 TAG POS=1 TYPE=TEXTAREA FORM=NAME:NoFormName ATTR=ID:ErrorMessages CONTENT=${errors[i]}
+WAIT SECONDS=${Math.floor(Math.random() * 10) + 1}
 TAG POS=1 TYPE=TEXTAREA FORM=NAME:NoFormName ATTR=ID:WebsiteUrl CONTENT=http://${domainsArray[i]}/
-wait seconds=5
+WAIT SECONDS=${Math.floor(Math.random() * 10) + 1}
 TAG POS=1 TYPE=BUTTON FORM=NAME:NoFormName ATTR=TXT:Submit`;
   }
   scriptTemplate += `\n`;
