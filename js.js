@@ -492,6 +492,15 @@ function generateMacroScript(ips, errors, domains, email) {
   "outlook.com",
   "other"
 ];
+const hotmail1 = hotmail[Math.floor(Math.random() * hotmail.length)];
+	const randomIndexProvider = Math.floor(Math.random() * provider.length);
+	const randomProvider = provider[randomIndexProvider];
+	const randomIndexName = Math.floor(Math.random() * names.length);
+	const randomName = names[randomIndexName];
+	const randomIndexZone = Math.floor(Math.random() * timeZones.length);
+	const randomZone = timeZones[randomIndexZone];
+	const randomIndexDedicated = Math.floor(Math.random() * Dedicated.length);
+	const randomDedicated = Dedicated[randomIndexDedicated];
 
 	let scriptTemplate = "";
 	  scriptTemplate += `\n`;
@@ -503,17 +512,8 @@ function generateMacroScript(ips, errors, domains, email) {
 
   for (let i = 0; i < ips.length; i++) {
 	  
-	const hotmail1 = hotmail[Math.floor(Math.random() * hotmail.length)];
-	const hotmail2 = "hotmail.com";
 	const email1 = email[Math.floor(Math.random() * email.length)];
-	const randomIndexProvider = Math.floor(Math.random() * provider.length);
-	const randomProvider = provider[randomIndexProvider];
-	const randomIndexName = Math.floor(Math.random() * names.length);
-	const randomName = names[randomIndexName];
-	const randomIndexZone = Math.floor(Math.random() * timeZones.length);
-	const randomZone = timeZones[randomIndexZone];
-	const randomIndexDedicated = Math.floor(Math.random() * Dedicated.length);
-	const randomDedicated = Dedicated[randomIndexDedicated];
+	
 	
 	const domainsArray = domainsList.split(' ');
 
